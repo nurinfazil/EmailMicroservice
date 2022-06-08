@@ -20,8 +20,9 @@ const Register = () => {
 
     const requestOptions = {
         method: 'POST',
+        mode: 'no-cors', // no-cors, *cors, same-origin
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email, attributes: userDetails })
+        body: JSON.stringify({ email: email, attributes: "test", expiresIn: 10 })
     };
 
     const registerUser = (e) => {
@@ -35,13 +36,13 @@ const Register = () => {
         console.log(JSON.stringify(userDetails))
         // console.log(email)
 
-        navigate("../email-sent", { replace: false });
+        // navigate("../email-sent", { replace: false });
 
     }
 
     const handleInputChange = e => {
         setUserDetails({ ...userDetails, [e.target.name]: e.target.value })
-        console.log(userDetails)
+        // console.log(userDetails)
     }
 
     const handleEmailChange = e => {
@@ -93,7 +94,7 @@ const Register = () => {
                         <div className="form-group">
                             <label>
                                 Suite or PO#:
-                                <input type="text" required name="suite" onChange={(e) => handleInputChange(e)} />
+                                <input type="text" name="suite" onChange={(e) => handleInputChange(e)} />
                             </label>
                             <label>
                                 City:

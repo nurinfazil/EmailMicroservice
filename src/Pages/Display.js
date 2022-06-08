@@ -13,7 +13,6 @@ const Display = () => {
 
     useEffect(() => {
         // call the api which gets information using NONCE
-
         fetch(`https://t42ekdpltl.execute-api.ca-central-1.amazonaws.com/emaillinks/${id}`)
             .then(response => {
                 if (!response.ok) {
@@ -24,10 +23,7 @@ const Display = () => {
             .then(data => {
                 setLinkData(JSON.parse(data.attributes));
                 setEmail(data.email)
-                console.log(JSON.parse(data.attributes))
             })
-
-
     }, [])
 
     return (
