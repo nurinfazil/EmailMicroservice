@@ -6,33 +6,6 @@ const Register = () => {
 
     let navigate = useNavigate();
 
-    const registerUser = () => {
-
-        // fetch(`${API_HOST}/shopping-list/${shoppingListId}`, {
-        //     method: 'PUT',
-        //     mode: 'cors', // no-cors, *cors, same-origin
-        //     cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-        //     credentials: 'same-origin', // include, *same-origin, omit
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //         // 'Content-Type': 'application/x-www-form-urlencoded',
-        //     },
-        //     redirect: 'follow', // manual, *follow, error
-        //     referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-        //     body: JSON.stringify(newIngredient) // body data type must match "Content-Type" header
-        // })
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         // console.log(data)
-        //     });;
-        console.log("user registered")
-        console.log(userDetails)
-        console.log(email)
-
-        navigate("../email-sent", { replace: false });
-
-    }
-
     const [userDetails, setUserDetails] = useState({
         firstName: "",
         lastName: "",
@@ -45,10 +18,30 @@ const Register = () => {
 
     const [email, setEmail] = useState("")
 
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, attributes: userDetails })
+    };
+
+    const registerUser = (e) => {
+        e.preventDefault();
+
+        fetch('https://t42ekdpltl.execute-api.ca-central-1.amazonaws.com/emaillinks/', requestOptions)
+            .then(response => response.json())
+            .then(data => console.log(data));
+
+        console.log("user registered")
+        console.log(JSON.stringify(userDetails))
+        // console.log(email)
+
+        navigate("../email-sent", { replace: false });
+
+    }
+
     const handleInputChange = e => {
-        console.log(e.target.value)
-        console.log(e.target.name)
         setUserDetails({ ...userDetails, [e.target.name]: e.target.value })
+        console.log(userDetails)
     }
 
     const handleEmailChange = e => {
@@ -72,15 +65,15 @@ const Register = () => {
                     Create a Web Account
                 </div>
                 <div id="account-input">
-                    <form id="form" onSubmit={() => registerUser()}>
+                    <form id="form" onSubmit={(e) => registerUser(e)}>
                         <div className="form-group">
                             <label>
                                 First Name:
-                                <input type="text" required name="firstname" onChange={(e) => handleInputChange(e)} />
+                                <input type="text" required name="firstName" onChange={(e) => handleInputChange(e)} />
                             </label>
                             <label>
                                 Last Name:
-                                <input type="text" required name="lastname" onChange={(e) => handleInputChange(e)} />
+                                <input type="text" required name="lastName" onChange={(e) => handleInputChange(e)} />
                             </label>
                             <label>
                                 Email:
@@ -90,7 +83,7 @@ const Register = () => {
                         <div className="form-group">
                             <label>
                                 Account Number:
-                                <input type="text" required name="accountnum" onChange={(e) => handleInputChange(e)} />
+                                <input type="text" required name="accountNum" onChange={(e) => handleInputChange(e)} />
                             </label>
                             <label>
                                 Address (Street Number and Street Name):

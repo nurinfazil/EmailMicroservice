@@ -1,37 +1,38 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import "../Styles/register.css"
 import "../Styles/display.css"
 import { useParams } from "react-router-dom"
 
 const Display = () => {
+
+    const [linkData, setLinkData] = useState({})
+    const [email, setEmail] = useState("")
+    const [isError, setIsError] = useState(false)
+    const [useEffectRunCount, setUseEffectRunCount] = useState(0)
     const { id } = useParams()
 
     useEffect(() => {
         // call the api which gets information using NONCE
 
-        fetch(`https://5dj18t1bld.execute-api.ca-central-1.amazonaws.com/hello`, {
-            method: 'GET',
-            mode: 'cors', // no-cors, *cors, same-origin
-            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'same-origin', // include, *same-origin, omit
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-                // 'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-        })
-            .then(response => console.log(response.text()))
+        fetch(`https://t42ekdpltl.execute-api.ca-central-1.amazonaws.com/emaillinks/${id}`)
+            .then(response => {
+                if (!response.ok) {
+                    setIsError(true)
+                }
+                return response.json();
+            })
             .then(data => {
-                // console.log(data)
-            });
+                setLinkData(JSON.parse(data.attributes));
+                setEmail(data.email)
+                console.log(JSON.parse(data.attributes))
+            })
 
-        console.log(id)
+
     }, [])
 
     return (
-        <div className="display-account">
+
+        isError ? (<div className="display-account">
             <div className='header'>
                 <div id="logo">408ETR</div>
                 <div className='header-nav-links'>
@@ -41,47 +42,69 @@ const Display = () => {
                     <div>MYACCOUNT</div>
                     <div>HELP</div>
                 </div>
-            </div>
+            </div >
             <div className="page-content">
                 <div className="page-title">
-                    Account Verified!
+                    Link Expired
                 </div>
                 <div id="account-information">
-                    <div>
-                        <div>First Name: </div>
-                        <div></div>
-                    </div>
-                    <div>
-                        <div>Last Name: </div>
-                        <div></div>
-                    </div>
-                    <div>
-                        <div>Email Name: </div>
-                        <div></div>
-                    </div>
-                    <div>
-                        <div>Account Number: </div>
-                        <div></div>
-                    </div>
-                    <div>
-                        <div>Address: </div>
-                        <div></div>
-                    </div>
-                    <div>
-                        <div>Suite or PO#: </div>
-                        <div></div>
-                    </div>
-                    <div>
-                        <div>City: </div>
-                        <div></div>
-                    </div>
-                    <div>
-                        <div>Province: </div>
-                        <div></div>
-                    </div>
+                    This link has expired. If you have already used this link, please request a new one.
                 </div>
             </div>
-        </div>
+        </div >)
+            : (<div className="display-account">
+                <div className='header'>
+                    <div id="logo">408ETR</div>
+                    <div className='header-nav-links'>
+                        <div>HIGHWAY</div>
+                        <div>TOLLS</div>
+                        <div>PAYMENTS</div>
+                        <div>MYACCOUNT</div>
+                        <div>HELP</div>
+                    </div>
+                </div >
+                <div className="page-content">
+                    <div className="page-title">
+                        Account Verified!
+                    </div>
+                    <div id="account-information">
+                        <div>
+                            <strong>First Name: </strong>
+                            <span>{linkData == undefined ? null : linkData.firstName}</span>
+                        </div>
+                        <div>
+                            <strong>Last Name: </strong>
+                            <span>  {linkData == undefined ? null : linkData.lastName}</span>
+                        </div>
+                        <div>
+                            <strong>Email: </strong>
+                            <span>{email}</span>
+                        </div>
+                        <div>
+                            <strong>Account Number: </strong>
+                            <span>{linkData == undefined ? null : linkData.accountNum}</span>
+                        </div>
+                        <div>
+                            <strong>Address: </strong>
+                            <span>{linkData == undefined ? null : linkData.address}</span>
+                        </div>
+                        <div>
+                            <strong>Suite or PO#: </strong>
+                            <span>{linkData == undefined ? null : linkData.suite}</span>
+                        </div>
+                        <div>
+                            <strong>City: </strong>
+                            <span>{linkData == undefined ? null : linkData.city}</span>
+                        </div>
+                        <div>
+                            <strong>Province: </strong>
+                            <span>{linkData == undefined ? null : linkData.province}</span>
+                        </div>
+                    </div>
+                </div>
+            </div >)
+
+
     )
 }
 
