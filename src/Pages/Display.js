@@ -9,8 +9,6 @@ const Display = () => {
     useEffect(() => {
         // call the api which gets information using NONCE
 
-        const endpointURL = "https://5dj18t1bld.execute-api.ca-central-1.amazonaws.com/hello"
-
         fetch(`https://5dj18t1bld.execute-api.ca-central-1.amazonaws.com/hello`, {
             method: 'GET',
             mode: 'cors', // no-cors, *cors, same-origin
@@ -26,10 +24,10 @@ const Display = () => {
             .then(response => console.log(response.body))
             .then(data => {
                 // console.log(data)
-            });;
+            });
 
-        // console.log(id)
-    }, [])
+        console.log(id)
+    }, [id])
 
     return (
         <div className="display-account">
