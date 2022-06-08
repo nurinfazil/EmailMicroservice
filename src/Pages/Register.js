@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import "../Styles/register.css"
+import axios from "axios"
 import React, { useState } from 'react'
 
 const Register = () => {
@@ -18,19 +19,37 @@ const Register = () => {
 
     const [email, setEmail] = useState("")
 
+    // const body = JSON.stringify({ email: "nurinfazil@hotmail.com", attributes: "test", expiresIn: 10, description: "description" })
+
     const requestOptions = {
         method: 'POST',
-        mode: 'no-cors', // no-cors, *cors, same-origin
+        mode: 'cors', // no-cors, *cors, same-origin
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email, attributes: "test", expiresIn: 10 })
+        body: JSON.stringify({ email: "nurinfazil@hotmail.com", attributes: "test", expiresIn: 10, description: "description" })
     };
+
+    // const axiosOptions = {
+    //     mode: 'no-cors', // no-cors, *cors, same-origin
+    //     headers: { 'Content-Type': 'application/json' },
+    //     // body: JSON.stringify({ email: "nurinfazil@hotmail.com", attributes: "test", expiresIn: 10, description: "description" })
+    // };
+
+
 
     const registerUser = (e) => {
         e.preventDefault();
 
-        fetch('https://t42ekdpltl.execute-api.ca-central-1.amazonaws.com/emaillinks/', requestOptions)
+        fetch('https://t42ekdpltl.execute-api.ca-central-1.amazonaws.com/emaillinks', requestOptions)
             .then(response => response.json())
             .then(data => console.log(data));
+
+        // axios.post('https://t42ekdpltl.execute-api.ca-central-1.amazonaws.com/emaillinks/', JSON.stringify({ email: "nurinfazil@hotmail.com", attributes: "test", expiresIn: 10, description: "description" }))
+        //     .then(function (response) {
+        //         console.log(response);
+        //     })
+        //     .catch(function (error) {
+        //         console.log(error);
+        //     });
 
         console.log("user registered")
         console.log(JSON.stringify(userDetails))
